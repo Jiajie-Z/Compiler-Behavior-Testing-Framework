@@ -1,0 +1,83 @@
+Compiler Behavior Testing Summary Report
+Generated at: 2026-03-19T15:58:23.744194
+============================================================
+
+Test: loop_test.c
+Status: PASSED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: False
+  - Anomalies:
+  - Severity: 0
+
+Test: simple_math.c
+Status: PASSED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: False
+  - Anomalies:
+  - Severity: 0
+
+Test: branch_test.c
+Status: PASSED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: False
+  - Anomalies:
+  - Severity: 0
+
+Test: recursion_test.c
+Status: PASSED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: False
+  - Anomalies:
+  - Severity: 0
+
+Test: null_pointer.c
+Status: FAILED
+  - O0: compile_success=True, run_returncode=3221225477, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: True
+  - Anomalies:
+    Runtime:
+      - CRASH_O0
+      - INCONSISTENT_RETURN_CODE
+      - OUTPUT_MISMATCH
+  - Severity: 7
+
+Test: out_of_bounds.c
+Status: FAILED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: True
+  - Anomalies:
+    Static:
+      - COMPILER_WARNING: ['O0', 'O2', 'O3']
+      - ARRAY_BOUNDS_WARNING: ['O0', 'O2', 'O3']
+    Runtime:
+      - OUTPUT_MISMATCH
+  - Severity: 11
+
+Test: overflow_test.c
+Status: PASSED
+  - O0: compile_success=True, run_returncode=0, timed_out=False
+  - O2: compile_success=True, run_returncode=0, timed_out=False
+  - O3: compile_success=True, run_returncode=0, timed_out=False
+  - Output mismatch: False
+  - Anomalies:
+  - Severity: 0
+
+============================================================
+Total tests: 7
+Failed tests: 2
+Output mismatches: 2
+Compile failures: 0
+Runtime failures: 1
+Timeout failures: 0
