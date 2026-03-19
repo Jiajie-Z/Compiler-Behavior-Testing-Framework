@@ -21,5 +21,6 @@ report.txt
 
 *.o
 *.obj
+
 outputs/*
 !outputs/.gitkeep
