@@ -71,4 +71,87 @@ A lightweight machine learning model predicts issue severity based on extracted 
 - Decision Tree Classifier (`scikit-learn`)
 - Trained on synthetic labeled data
 
-#### Output Example:
+
+---
+
+## 🧠 Key Insight
+
+This framework highlights how **undefined behavior in C** can lead to:
+
+- Different outputs across optimization levels
+- Crashes in one optimization level but not others
+- Silent correctness issues
+
+Example cases:
+- `null_pointer.c` → crash in `-O0`, but not in optimized builds
+- `out_of_bounds.c` → inconsistent outputs across optimization levels
+
+---
+
+## 🏗️ Project Structure
+
+---
+
+## 🧠 Key Insight
+
+This framework highlights how **undefined behavior in C** can lead to:
+
+- Different outputs across optimization levels
+- Crashes in one optimization level but not others
+- Silent correctness issues
+
+Example cases:
+- `null_pointer.c` → crash in `-O0`, but not in optimized builds
+- `out_of_bounds.c` → inconsistent outputs across optimization levels
+
+---
+
+## 🏗️ Project Structure
+.
+├── test_cases/
+│ ├── basic/
+│ └── edge/
+│
+├── outputs/
+│ ├── binaries/
+│ ├── logs/
+│ └── report.txt
+│
+├── ml/
+│ ├── generate_data.py
+│ ├── train_model.py
+│ ├── predict_severity.py
+│ ├── model.pkl
+│ └── training_data.csv
+│
+├── run_tests.py
+├── report.py
+└── README.md
+
+
+---
+
+## ▶️ How to Run
+
+### 1. Generate ML training data
+```bash
+py ml/generate_data.py
+
+### 2. Train the model
+py ml/train_model.py
+
+### 3. Run test suite
+py run_tests.py
+
+### 4. View report
+outputs/report.txt
+
+### 🧩 Technologies Used
+
+Python (automation framework)
+
+C / Clang (compiler testing)
+
+scikit-learn (ML model)
+
+JSON (logging & reporting)
