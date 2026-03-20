@@ -1,19 +1,26 @@
-# Compiler Behavior Testing Framework with ML-Assisted Anomaly Detection
+# Compiler Validation Framework with ML-Assisted Anomaly Detection
 
-A lightweight compiler validation framework that detects undefined behavior and inconsistencies across optimization levels using rule-based analysis and ML-assisted severity classification.
+A system-level testing framework designed to detect undefined behavior and inconsistencies across compiler optimization levels, combining automated validation with ML-assisted anomaly classification.
 
 ---
 
 ## 🚀 Overview
 
-This project implements an automated testing pipeline for validating compiler behavior by:
+This project implements an automated pipeline to validate compiler behavior by compiling and executing C programs under different optimization levels (`-O0`, `-O2`, `-O3`) and analyzing discrepancies.
 
-- Compiling C programs with multiple optimization levels (`-O0`, `-O2`, `-O3`)
-- Executing binaries and comparing outputs
-- Detecting anomalies caused by undefined behavior
-- Classifying issue severity using rule-based logic and a machine learning model
+It is designed to simulate real-world **compiler / system validation workflows**, similar to those used in low-level systems, GPU drivers, and compiler toolchains.
 
-It simulates real-world **compiler validation and system-level testing workflows**, similar to those used in GPU drivers, compilers, and low-level systems software.
+---
+
+## 🔍 Motivation
+
+Undefined behavior in C can lead to:
+
+- Inconsistent outputs across optimization levels
+- Silent correctness issues
+- Crashes in some builds but not others
+
+This framework systematically detects such issues and prioritizes them using both rule-based analysis and machine learning.
 
 ---
 
@@ -21,25 +28,33 @@ It simulates real-world **compiler validation and system-level testing workflows
 
 ### 🔧 Multi-Optimization Testing
 - Compile test cases with:
-  - `-O0` (no optimization)
-  - `-O2` (standard optimization)
+  - `-O0` (baseline)
+  - `-O2` (optimized)
   - `-O3` (aggressive optimization)
-- Compare runtime behavior across optimization levels
+- Compare runtime behavior across builds
 
 ---
 
-### 🧪 Automated Test Execution
-- Batch execution of test cases
-- Captures:
-  - stdout / stderr
-  - return codes
-  - timeout behavior
+### 🧪 Automated Execution Pipeline
+
+[Test Cases]
+↓
+[Compile (Clang)]
+↓
+[Execute Binaries]
+↓
+[Output Comparison]
+↓
+[Anomaly Detection]
+↓
+[ML Severity Classification]
+↓
+[Report Generation]
+
 
 ---
 
 ### ⚠️ Rule-Based Anomaly Detection
-
-Detects both **static** and **runtime anomalies**:
 
 #### Static Anomalies
 - `COMPILER_WARNING`
@@ -51,104 +66,89 @@ Detects both **static** and **runtime anomalies**:
 - `INCONSISTENT_RETURN_CODE`
 - `TIMEOUT_Ox`
 
-Each anomaly contributes to a **severity score**, enabling prioritization of issues.
+Each anomaly contributes to a **severity score** for prioritization.
 
 ---
 
 ### 🤖 ML-Assisted Severity Classification
 
-A lightweight machine learning model predicts issue severity based on extracted features.
+A Decision Tree model predicts severity levels:
 
-#### Features used:
+- `LOW`
+- `MEDIUM`
+- `HIGH`
+
+#### Input Features:
 - Compiler warnings
 - Array bounds warnings
 - Output mismatches
-- Crashes / timeouts
+- Crash / timeout signals
 - Return code inconsistencies
 - Runtime failure counts
 
-#### Model:
-- Decision Tree Classifier (`scikit-learn`)
-- Trained on synthetic labeled data
+---
 
-> ML predictions are used as an auxiliary signal to complement rule-based detection.
+### 📊 Structured Reporting
+
+- Per-test detailed logs (JSON)
+- Aggregated summary report
+- Grouped anomaly output:
+  - Static vs Runtime
+- Severity scoring + ML prediction
 
 ---
 
-## 📊 Example Output
+## 🧠 Example Findings
 
-```
-Test: null_pointer.c
-Status: FAILED
-
-  - O0: compile_success=True, run_returncode=3221225477
-  - O2: compile_success=True, run_returncode=0
-  - O3: compile_success=True, run_returncode=0
-
-  - Output mismatch: True
-
-  - Anomalies:
-    Runtime:
-      - CRASH_O0
-      - INCONSISTENT_RETURN_CODE
-      - OUTPUT_MISMATCH
-
-  - Severity: 7
-  - ML Predicted Severity: HIGH
-```
-
----
-
-## 🧠 Key Insight
-
-This framework highlights how **undefined behavior in C** can lead to:
-
-- Different outputs across optimization levels
-- Crashes in one optimization level but not others
-- Silent correctness issues
-
-Example cases:
-- `null_pointer.c` → crash in `-O0`, but not in optimized builds
-- `out_of_bounds.c` → inconsistent outputs across optimization levels
+| Test Case         | Issue Type                     | Insight |
+|------------------|------------------------------|--------|
+| `null_pointer.c` | Crash in `-O0` only          | UB leads to inconsistent runtime behavior |
+| `out_of_bounds.c`| Different outputs across O2/O3| Memory access UB causes nondeterminism |
 
 ---
 
 ## 🏗️ Project Structure
-
-```
 .
 ├── test_cases/
-│   ├── basic/
-│   └── edge/
+│ ├── basic/
+│ └── edge/
 │
 ├── outputs/
-│   ├── binaries/
-│   ├── logs/
-│   └── report.txt
+│ ├── binaries/
+│ ├── logs/
+│ └── reports/
+│
+├── compiler/
+│ ├── compile.py
+│ ├── execute.py
+│ ├── compare.py
+│ ├── anomaly.py
+│ └── report.py
 │
 ├── ml/
-│   ├── generate_data.py
-│   ├── train_model.py
-│   ├── predict_severity.py
-│   ├── model.pkl
-│   └── training_data.csv
+│ ├── generate_data.py
+│ ├── train_model.py
+│ ├── predict_severity.py
+│ ├── model.pkl
+│ └── training_data.csv
 │
+├── config.py
 ├── run_tests.py
-├── report.py
 └── README.md
-```
 
 ---
 
 ## ▶️ How to Run
 
-### 1. Generate ML training data
+### 1. Install dependencies
 ```bash
-py ml/generate_data.py
+pip install -r requirements.txt
+
 ```
 
-### 2. Train the model
+### 2. Train ML model
 ```bash
+py ml/generate_data.py
 py ml/train_model.py
 ```
 
@@ -164,30 +164,24 @@ outputs/report.txt
 
 ---
 
-## 🧩 Technologies Used
+## 🧩 Tech Stack
 
-- Python (automation framework)
-- C / Clang (compiler testing)
-- scikit-learn (ML model)
-- JSON (logging & reporting)
+- Languages: Python, C
+- Compiler: Clang
+- Testing: PyTest-style automation pipeline
+- ML: scikit-learn (Decision Tree)
+- Data: JSON logging
+- Tools: Git
 
 ---
 
-## 🎯 Why This Project Matters
+## 🧠 Key Takeaways
 
-This project demonstrates:
+- Compiler optimizations can expose undefined behavior in unexpected ways
 
-- Compiler behavior validation
-- Undefined behavior detection
-- Cross-optimization testing
-- System-level debugging workflows
-- Integration of rule-based and ML-based validation
+- Cross-build validation is critical for system-level correctness
 
-It is particularly relevant to:
-
-- Compiler testing
-- Low-level systems software QA
-- Performance and correctness testing
+- Combining rule-based detection with ML improves issue prioritization
 
 ---
 
