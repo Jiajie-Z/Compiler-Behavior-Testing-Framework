@@ -108,34 +108,37 @@ A Decision Tree model predicts severity levels:
 ---
 
 ## 🏗️ Project Structure
-.
-├── test_cases/
-│ ├── basic/
-│ └── edge/
-│
-├── outputs/
-│ ├── binaries/
-│ ├── logs/
-│ └── reports/
-│
-├── compiler/
-│ ├── compile.py
-│ ├── execute.py
-│ ├── compare.py
-│ ├── anomaly.py
-│ └── report.py
-│
-├── ml/
-│ ├── generate_data.py
-│ ├── train_model.py
-│ ├── predict_severity.py
-│ ├── model.pkl
-│ └── training_data.csv
-│
-├── config.py
-├── run_tests.py
-└── README.md
 
+```text
+compiler-validation-framework/
+│
+├── test_cases/                # Input test programs
+│   ├── basic/                 # Simple correctness tests
+│   └── edge/                  # Undefined behavior cases (UB)
+|   └── control_flow/          # Undefined behavior cases (UB)
+│
+├── outputs/                   # Generated artifacts
+│   ├── binaries/              # Compiled executables
+│   ├── logs/                  # Per-test JSON logs
+│   └── reports/               # Summary reports
+│
+├── compiler/                  # Core pipeline modules
+│   ├── compile.py             # Compilation logic (Clang wrapper)
+│   ├── execute.py             # Execution with timeout handling
+│   ├── compare.py             # Output comparison across builds
+│   ├── anomaly.py             # Rule-based anomaly detection
+│   └── report.py              # Report generation
+│
+├── ml/                        # ML-based severity classification
+│   ├── generate_data.py       # Synthetic dataset generation
+│   ├── train_model.py         # Model training (Decision Tree)
+│   ├── predict_severity.py    # Inference logic
+│   ├── model.pkl              # Trained model
+│   └── training_data.csv      # Training dataset
+│
+├── config.py                  # Global configuration
+├── run_tests.py               # Main entry point
+└── README.md
 ---
 
 ## ▶️ How to Run
