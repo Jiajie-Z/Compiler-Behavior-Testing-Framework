@@ -71,4 +71,73 @@ A lightweight machine learning model predicts issue severity based on extracted 
 - Decision Tree Classifier (`scikit-learn`)
 - Trained on synthetic labeled data
 
-#### Output Example:
+
+---
+
+## 🧠 Key Insight
+
+This framework highlights how **undefined behavior in C** can lead to:
+
+- Different outputs across optimization levels
+- Crashes in one optimization level but not others
+- Silent correctness issues
+
+Example cases:
+- `null_pointer.c` → crash in `-O0`, but not in optimized builds
+- `out_of_bounds.c` → inconsistent outputs across optimization levels
+
+---
+
+## 🏗️ Project Structure
+.
+├── test_cases/
+│ ├── basic/
+│ └── edge/
+│
+├── outputs/
+│ ├── binaries/
+│ ├── logs/
+│ └── report.txt
+│
+├── ml/
+│ ├── generate_data.py
+│ ├── train_model.py
+│ ├── predict_severity.py
+│ ├── model.pkl
+│ └── training_data.csv
+│
+├── run_tests.py
+├── report.py
+└── README.md
+
+
+## How to Run
+1. Generate training data:
+   py ml/generate_data.py
+
+2. Train model:
+   py ml/train_model.py
+
+3. Run tests:
+   py run_tests.py
+
+4. View report:
+   outputs/report.txt
+
+## Technologies
+- Python
+- C / Clang
+- scikit-learn
+- JSON
+
+## 🔮 Future Improvements
+
+Replace synthetic training data with real-world test logs
+
+Integrate LLVM sanitizers (ASan / UBSan)
+
+Add fuzz testing for edge-case generation
+
+Extend ML model to anomaly classification
+
+Build a visualization dashboard for analysis

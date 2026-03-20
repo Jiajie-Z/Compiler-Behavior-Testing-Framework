@@ -73,7 +73,16 @@ def write_summary_report(report_path: Path, all_results: List[Dict[str, Any]]) -
             for r in runtime:
                 lines.append(f"      - {r}")
 
+        if not static and not runtime:
+            lines.append("    None")
+
         lines.append(f"  - Severity: {anomaly.get('severity', 0)}")
+
+        ml_prediction = result.get("ml_prediction", {})
+        predicted_label = ml_prediction.get("predicted_severity_label")
+
+        if predicted_label:
+            lines.append(f"  - ML Predicted Severity: {predicted_label}")
         
 
     lines.append("\n" + "=" * 60)

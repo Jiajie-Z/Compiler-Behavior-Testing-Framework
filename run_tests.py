@@ -17,6 +17,7 @@ from compiler.compare import compare_outputs
 from compiler.report import write_test_log, write_summary_report
 from compiler.anomaly import detect_anomalies
 
+from ml.predict_severity import predict_severity_label
 
 def discover_test_cases(root_dir: Path) -> List[Path]:
     test_files = []
@@ -80,8 +81,12 @@ def run_single_test(source_file: Path) -> Dict[str, Any]:
     anomaly = detect_anomalies(test_result)
 
     print("ANOMALY:", anomaly) #debug
-    
+
     test_result["anomaly"] = anomaly
+
+    predicted_label = predict_severity_label(test_result)
+    test_result["ml_prediction"] = {
+    "predicted_severity_label": predicted_label}   
 
     if anomaly["severity"] >= 3:
         test_result["status"] = "FAILED"
